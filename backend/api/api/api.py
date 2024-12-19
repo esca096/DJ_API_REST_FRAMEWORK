@@ -24,11 +24,13 @@ def product_api_view(request, pk=None, *args, **kwargs):
         
         #cette condition lier au serializer2 Recuperer tout les elements du models
         products = Product.objects.all()
-        serializer = ProductSerializer2(products, many=True)
+        serializer = ProductSerializer1(products, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     #cette condition lier serializer1 permet de creer une nouvelle instance du models
     if request.method == 'POST':
+        data = request.data
+        name = data.get('name')
         serializer = ProductSerializer1(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()

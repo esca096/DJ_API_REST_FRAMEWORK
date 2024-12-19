@@ -4,11 +4,29 @@ from rest_framework import serializers
 
 class ProductSerializer1(serializers.ModelSerializer):
     email = serializers.EmailField(write_only=True)
+    name = serializers.CharField(max_length=255)
+    
+    #ajout de fonction depuis le models Product
+    price_in_euros = serializers.SerializerMethodField()
+    description_in_euros = serializers.SerializerMethodField()
+    details_link = serializers.CharField(source='get_absolute_url', read_only=True)
     # cela fat appel a tout les champs du models
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ['id','name','email','price_in_euros','description_in_euros', 'details_link']
         read_only_fields = ['created_at', 'updated_at']
+        
+    def get_price_in_euros(self, obj):
+        return obj.get_price_in_euros()
+    
+    def get_description_in_euros(self, obj):
+        return obj.get_description()
+        
+    #Validation de certain condition sur le name avec le champs name declarer en haut   
+    def validate_name(self, value):
+        if value in ['ESCANOR', 'LION']:
+            raise serializers.ValidationError('Your are not allowed to use this name')
+        return value
     
     # c'est une surchage de methode pour ajouter la champs email   
     def create(self, validated_data):
