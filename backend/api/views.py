@@ -39,4 +39,4 @@ def home(request):
         'description':product.description
     } for product in products]
     
-    return JsonResponse(data)
+    return JsonResponse(data, safe=False)

@@ -19,12 +19,14 @@ def product_api_view(request, pk=None, *args, **kwargs):
         #cette condition lier au serializer1 Recuperer l'id d'un elements dans le  model
         if pk is not None:
             product = get_object_or_404(Product, pk=pk)
-            serializer = ProductSerializer1(product)
+            context = {'request':request}
+            serializer = ProductSerializer1(product, context=context)
             return Response(serializer.data, status=status.HTTP_200_OK)
         
         #cette condition lier au serializer2 Recuperer tout les elements du models
         products = Product.objects.all()
-        serializer = ProductSerializer1(products, many=True)
+        context = {'request':request}
+        serializer = ProductSerializer1(products, many=True, context=context)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     #cette condition lier serializer1 permet de creer une nouvelle instance du models

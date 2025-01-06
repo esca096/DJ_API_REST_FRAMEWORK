@@ -9,11 +9,11 @@ class ProductSerializer1(serializers.ModelSerializer):
     #ajout de fonction depuis le models Product
     price_in_euros = serializers.SerializerMethodField()
     description_in_euros = serializers.SerializerMethodField()
-    details_link = serializers.CharField(source='get_absolute_url', read_only=True)
+    link = serializers.HyperlinkedIdentityField(view_name='api:product_api_view_detail', lookup_field='pk')
     # cela fat appel a tout les champs du models
     class Meta:
         model = Product
-        fields = ['id','name','email','price_in_euros','description_in_euros', 'details_link']
+        fields = ['id','name','email','price_in_euros','description_in_euros', 'link']
         read_only_fields = ['created_at', 'updated_at']
         
     def get_price_in_euros(self, obj):
