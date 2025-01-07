@@ -13,8 +13,8 @@ class ProductSerializer1(serializers.ModelSerializer):
     # cela fat appel a tout les champs du models
     class Meta:
         model = Product
-        fields = ['id','name','email','price_in_euros','description_in_euros', 'link']
-        read_only_fields = ['created_at', 'updated_at']
+        fields = '__all__'
+        #read_only_fields = ['created_at', 'updated_at']
         
     def get_price_in_euros(self, obj):
         return obj.get_price_in_euros()
